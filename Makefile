@@ -1,6 +1,8 @@
 SHELL := /usr/bin/env bash
 DEPS  := vendor/simpleirc
 
+default: build
+
 all: clean lint install
 
 build:

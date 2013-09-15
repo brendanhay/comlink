@@ -45,17 +45,18 @@ main = do
     name  <- getEnv "NICK"
     chans <- splitOn "," <$> getEnv "CHANNELS"
     dbg   <- isJust <$> lookupEnv "DEBUG"
+
+    let cfg = (mkDefaultConfig host name)
+            { cUsername    = name
+            , cRealname    = name
+            , cChannels    = chans
+            , cEvents      = events chans
+            , cPort        = 6667
+            , cCTCPVersion = name
+            }
+
     either throw (serveSnaplet defaultConfig . initialise) =<<
         connect cfg True dbg
-  where
-    cfg = (mkDefaultConfig host name)
-        { cUsername    = name
-        , cRealname    = name
-        , cChannels    = chans
-        , cEvents      = events chans
-        , cPort        = 6667
-        , cCTCPVersion = name
-        }
 
 initialise :: MIrc -> SnapletInit App App
 initialise mirc = makeSnaplet "comlink" "Comlink" Nothing $ do
