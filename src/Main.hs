@@ -15,7 +15,7 @@
 
 module Main (main) where
 
-import           Control.Concurrent        (threadDelay)
+import           Control.Concurrent        (forkIO, threadDelay)
 import           Control.Exception         (throw)
 import           Control.Lens              (makeLenses, view)
 import           Data.ByteString           (ByteString)
@@ -41,11 +41,11 @@ type Comlink = Handler App App
 
 main :: IO ()
 main = do
-    host  <- getEnv "IRC_HOST"
-    port  <- read <$> getEnv "IRC_PORT"
-    name  <- getEnv "IRC_NICK"
-    chans <- splitOn "," <$> getEnv "IRC_CHANNELS"
-    dbg   <- isJust <$> lookupEnv "IRC_DEBUG"
+    !host  <- getEnv "IRC_HOST"
+    !port  <- read <$> getEnv "IRC_PORT"
+    !name  <- getEnv "IRC_NICK"
+    !chans <- splitOn "," <$> getEnv "IRC_CHANNELS"
+    !dbg   <- isJust <$> lookupEnv "IRC_DEBUG"
 
     let cfg = (mkDefaultConfig host name)
             { cUsername = name
@@ -55,8 +55,15 @@ main = do
             , cPort     = port
             }
 
-    either throw (serveSnaplet defaultConfig . initialise) =<<
-        connect cfg True dbg
+    !mirc  <- connect cfg True dbg
+
+    either throw (run host) mirc
+  where
+    run host m = do
+         void . forkIO . forever $ do
+             threadDelay 5000000
+             sendRaw m ("PING :" `BS.append` BS.pack host)
+         serveSnaplet defaultConfig $ initialise m
 
 initialise :: MIrc -> SnapletInit App App
 initialise mirc = makeSnaplet "comlink" "Comlink" Nothing $ do
