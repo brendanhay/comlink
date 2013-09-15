@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+APP=comlink
+
+exec svlogd -tt /var/log/$APP
