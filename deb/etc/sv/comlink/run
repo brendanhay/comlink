@@ -12,6 +12,16 @@ source $CONFIG
 
 USER=${USER:-www-data}
 
+export IRC_HOST=${IRC_HOST?'unset'}
+export IRC_PORT=${IRC_PORT?'unset'}
+export IRC_NICK=${IRC_NICK?'unset'}
+export IRC_CHANNELS=${IRC_CHANNELS?'unset'}
+export IRC_DEBUG=${IRC_DEBUG?'unset'}
+
 cd $HOME
 
-exec chpst -u $USER $BIN -p ${PORT?'unset'} --access-log="-" --error-log="-"
+exec chpst -u $USER \
+    $BIN \
+    -p ${PORT?'unset'} \
+    --access-log="-" \
+    --error-log="-"

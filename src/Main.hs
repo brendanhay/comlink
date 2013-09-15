@@ -42,7 +42,7 @@ type Comlink = Handler App App
 main :: IO ()
 main = do
     host  <- getEnv "IRC_HOST"
-    port  <- getEnv "IRC_PORT"
+    port  <- read <$> getEnv "IRC_PORT"
     name  <- getEnv "IRC_NICK"
     chans <- splitOn "," <$> getEnv "IRC_CHANNELS"
     dbg   <- isJust <$> lookupEnv "IRC_DEBUG"
@@ -52,8 +52,7 @@ main = do
             , cRealname    = name
             , cChannels    = chans
             , cEvents      = events chans
-            , cPort        = 6667
-            , cCTCPVersion = name
+            , cPort        = port
             }
 
     either throw (serveSnaplet defaultConfig . initialise) =<<
