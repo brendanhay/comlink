@@ -22,6 +22,7 @@ import           Data.ByteString           (ByteString)
 import qualified Data.ByteString.Char8     as BS
 import           Data.Char
 import           Data.List.Split
+import           Data.Maybe
 import           Data.Predicate
 import           Network.HTTP.Types.Status
 import           Network.SimpleIRC
@@ -40,11 +41,11 @@ type Comlink = Handler App App
 
 main :: IO ()
 main = do
-    host  <- getEnv "HOST"
-    port  <- getEnv "PORT"
-    name  <- getEnv "NICK"
-    chans <- splitOn "," <$> getEnv "CHANNELS"
-    dbg   <- isJust <$> lookupEnv "DEBUG"
+    host  <- getEnv "IRC_HOST"
+    port  <- getEnv "IRC_PORT"
+    name  <- getEnv "IRC_NICK"
+    chans <- splitOn "," <$> getEnv "IRC_CHANNELS"
+    dbg   <- isJust <$> lookupEnv "IRC_DEBUG"
 
     let cfg = (mkDefaultConfig host name)
             { cUsername    = name
