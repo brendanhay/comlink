@@ -48,11 +48,11 @@ main = do
     dbg   <- isJust <$> lookupEnv "IRC_DEBUG"
 
     let cfg = (mkDefaultConfig host name)
-            { cUsername    = name
-            , cRealname    = name
-            , cChannels    = chans
-            , cEvents      = events chans
-            , cPort        = port
+            { cUsername = name
+            , cRealname = name
+            , cChannels = chans
+            , cEvents   = events chans
+            , cPort     = port
             }
 
     either throw (serveSnaplet defaultConfig . initialise) =<<
