@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+exec 2>&1
+
+APP=comlink
+CONFIG=${CONFIG:-/etc/$APP/.env}
+HOME=${APP_HOME:-/opt/$APP}
+BIN=$HOME/bin/$APP
+
+source $CONFIG
+
+USER=${USER:-www-data}
+
+cd $HOME
+
+exec chpst -u $USER $BIN -p ${PORT?'unset'} --access-log="-" --error-log="-"

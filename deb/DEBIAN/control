@@ -1,0 +1,6 @@
+Package: comlink
+Version: <<VERSION_NUMBER>>+<<BUILD_NUMBER>>
+Maintainer: Brendan Hay <brendan.g.hay@gmail.com>
+Architecture: amd64
+Depends: runit
+Description: Comlink
