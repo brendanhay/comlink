@@ -61,7 +61,7 @@ main = do
   where
     run host m = do
          void . forkIO . forever $ do
-             threadDelay 5000000
+             threadDelay 10000000
              sendRaw m ("PING :" `BS.append` BS.pack host)
          serveSnaplet defaultConfig $ initialise m
 
@@ -91,13 +91,12 @@ format :: ByteString -> ByteString -> ByteString -> ByteString -> ByteString
 format lvl evt host msg = BS.concat
     [ "["
     , BS.map normalise lvl
-    , "] "
-    , "["
+    , "/"
     , BS.map normalise evt
     , "] "
-    , "<"
+    , "["
     , host
-    , "> "
+    , "] "
     , msg
     ]
   where
