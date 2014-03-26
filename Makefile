@@ -22,4 +22,4 @@ add-sources: $(DEPS)
 	find -L vendor -name "*.cabal" -exec dirname {} \; | xargs cabal-dev add-source
 
 vendor/simpleirc:
-	git clone git@github.com:dom96/SimpleIRC.git $@
+	git clone https://github.com/dom96/SimpleIRC.git $@
