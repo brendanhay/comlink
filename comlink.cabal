@@ -41,6 +41,6 @@ executable comlink
       , simpleirc
       , snap
       , snap-core
-      , snap-predicates
+      , snap-predicates < 0.4
       , snap-server
       , split
